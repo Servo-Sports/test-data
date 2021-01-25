@@ -1,29 +1,7 @@
 import Chance from 'chance'
-import { reverse } from 'dns'
-import { create } from 'domain'
 import { DateTime } from 'luxon'
+import {Unpacked, groupByCount, groupBy, notEmpty} from './utils'
 const chance = new Chance()
-type Unpacked<T> = T extends (infer U)[] ? U : T
-
-const groupByCount = <T>(input: Array<T>, numPerGroup: number): Array<Array<T>> => {
-  if (input.length < numPerGroup) return []
-  return [input.slice(0, numPerGroup), ...groupByCount(input.slice(numPerGroup, undefined), numPerGroup)]
-}
-
-const groupBy = <T, V>(input: Array<T>, keyFn: (inp: T) => V) => {
-  return Array.from(
-    input
-      .reduce((prev, cur) => {
-        const keyV = keyFn(cur)
-        if (prev.has(keyV)) prev.get(keyV)?.push(cur)
-        else prev.set(keyV, [cur])
-        return prev
-      }, new Map<V, Array<T>>())
-      .values()
-  )
-}
-
-const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue => value !== null && value !== undefined
 
 const schema = 'https://ijruschemas.z16.web.core.windows.net/v1.3.0/event.schema.json'
 
