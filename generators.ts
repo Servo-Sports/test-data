@@ -435,7 +435,13 @@ function createAAEntriesSpecForTeam(
 ) {
   const aa = aaEventDef.AllAround;
   if (!aa || !aaEventDef.Components) return [];
-  const groups = groupByCount(team.Participants, aa.NumParticipants);
+  const groups = groupByCount(
+    // sort by birthdate to cluster groups by age
+    team.Participants.sort(
+      (p1, p2) => p1.Birthdate.valueOf() - p2.Birthdate.valueOf()
+    ),
+    aa.NumParticipants
+  );
   const entrySpecs = groups.map((pg) => {
     // create the compenent entries
     const compEntrySpecs = aaEventDef.Components.map((comp) =>
