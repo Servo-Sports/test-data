@@ -1,6 +1,13 @@
 import Chance from 'chance';
 import {DateTime} from 'luxon';
-import {Unpacked, groupByCount, groupBy, notEmpty} from './utils';
+import {
+  Unpacked,
+  groupByCount,
+  groupBy,
+  notEmpty,
+  randomFromList,
+  range,
+} from './utils';
 const chance = new Chance();
 
 const schema =
@@ -202,13 +209,6 @@ function createParticipant(
 }
 
 type Participant = ReturnType<typeof createParticipant>;
-
-function randomFromList<T>(input: Array<T>): T {
-  const index = Math.floor(Math.random() * input.length);
-  return input[index];
-}
-
-const range = (length: number) => [...Array.from(Array(length).keys())];
 
 function createTeam(
   TeamID: number,
