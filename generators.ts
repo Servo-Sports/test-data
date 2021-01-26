@@ -175,13 +175,21 @@ const Subcompetitions = [
   },
 ];
 
-function createParticipant(ParticipantID: number) {
+function createParticipant(
+  ParticipantID: number,
+  firstBirthdate: DateTime,
+  lastBirthdate: DateTime
+) {
   const gender = chance.gender() === 'Female' ? 'female' : 'male';
+  const birthdateOffset = Math.floor(
+    lastBirthdate.diff(firstBirthdate).as('days') * Math.random()
+  );
+  const birthdate = firstBirthdate.plus({days: birthdateOffset});
   return {
     Key: ParticipantID.toString(),
     ParticipantID,
     MemberID: 1000 + ParticipantID,
-    Birthdate: chance.birthday({type: 'child'}).valueOf(),
+    Birthdate: birthdate.valueOf(),
     FirstName: chance.first({gender}),
     LastName: chance.last(),
     GenderID: gender === 'female' ? 1 : 0,
@@ -201,7 +209,12 @@ function randomFromList<T>(input: Array<T>): T {
 
 const range = (length: number) => [...Array.from(Array(length).keys())];
 
-function createTeam(TeamID: number, numParticipants: number) {
+function createTeam(
+  TeamID: number,
+  numParticipants: number,
+  firstBirthdate: DateTime,
+  lastBirthdate: DateTime
+) {
   const prefixList = [
     'Admirable',
     'Brave',
@@ -235,7 +248,7 @@ function createTeam(TeamID: number, numParticipants: number) {
     TeamID: TeamID,
     TeamName: `${randomFromList(prefixList)} ${chance.animal()}s`,
     Participants: range(numParticipants).map((n) =>
-      createParticipant(TeamID * 1000 + n)
+      createParticipant(TeamID * 1000 + n, firstBirthdate, lastBirthdate)
     ),
   };
 }
@@ -470,10 +483,15 @@ export type Competition = ReturnType<typeof createCompetition>;
 export function createDataFileContent(numTotalParticipants: number) {
   const numParticipantsPerTeam = 30;
   const ageCutoffDate = DateTime.utc();
+  const minAge = 10;
+  const maxAge = 20;
+  const ageToDate = (age: number) => ageCutoffDate.minus({years: age});
+  const firstBirthdate = ageToDate(maxAge);
+  const lastBirthdate = ageToDate(minAge);
   const numTeams = Math.round(numTotalParticipants / numParticipantsPerTeam);
 
   const Teams = range(numTeams).map((n) =>
-    createTeam(n, numParticipantsPerTeam)
+    createTeam(n, numParticipantsPerTeam, firstBirthdate, lastBirthdate)
   );
   const x = EventDefinitions.map((ed) => Teams.map((t) => 1));
   const Events = createAAEventsForCompetition(
