@@ -159,9 +159,10 @@ const AllAroundEventDefinitions = [
   {
     AllAround: EventDefinitionMap.get('e.ijru.oa.dd.tddo.4.0'),
     Components: [
-      EventDefinitionMap.get('e.ijru.fs.dd.ddpf.4.75'),
       EventDefinitionMap.get('e.ijru.sp.dd.ddss.3.60'),
+      EventDefinitionMap.get('e.ijru.sp.dd.ddsr.4.4x30'),
       EventDefinitionMap.get('e.ijru.fs.dd.ddsf.3.75'),
+      EventDefinitionMap.get('e.ijru.fs.dd.ddpf.4.75'),
     ].filter(notEmpty),
   },
 ];
@@ -385,7 +386,9 @@ function entrySpecsToEvents(
   const mapGroups = (eg: Unpacked<typeof entryGroups>) => {
     const first = eg[0];
     console.log(
-      `Creating ${first.EventDefinition.EventDefinitionCode} ${first.AgeGroup.AgeGroupName} ${genderIDToCode[first.GenderID]} (${eg.length} entries)`
+      `Creating ${first.EventDefinition.EventDefinitionCode} ${
+        first.AgeGroup.AgeGroupName
+      } ${genderIDToCode[first.GenderID]} (${eg.length} entries)`
     );
     // create the entries in the event
     const entries = eg.map((en) => {
