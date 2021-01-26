@@ -348,9 +348,9 @@ function entrySpecsToEvents(
       const oldest = DateTime.fromMillis(
         Math.min(...es.Participants.map((p) => Number(p.Birthdate)))
       );
-      const maxAge = ageCutoffDate.diff(oldest, 'years').years;
+      const maxParticipantAge = ageCutoffDate.diff(oldest, 'years').years;
       const validAgeGroups = ageGroups
-        .filter((ag) => ag.MaxAge <= maxAge)
+        .filter((ag) => ag.MaxAge >= maxParticipantAge)
         .sort((a, b) => a.MaxAge - b.MaxAge);
       // console.log(`valid age groups:`, validAgeGroups, oldest.toString(), maxAge)
       const AgeGroup = validAgeGroups.length ? validAgeGroups[0] : null;
@@ -385,7 +385,7 @@ function entrySpecsToEvents(
   const mapGroups = (eg: Unpacked<typeof entryGroups>) => {
     const first = eg[0];
     console.log(
-      `Creating ${first.EventDefinition.EventDefinitionCode} (${eg.length} entries)`
+      `Creating ${first.EventDefinition.EventDefinitionCode} ${first.AgeGroup.AgeGroupName} ${genderIDToCode[first.GenderID]} (${eg.length} entries)`
     );
     // create the entries in the event
     const entries = eg.map((en) => {
