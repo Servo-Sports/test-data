@@ -97,7 +97,7 @@ const EventDefinitions = [
     EventDefinitionCode: 'e.ijru.oa.sr.isro.1.0',
     EventDefinitionName: 'Individual Single Rope Overall',
     IsAllAround: true,
-    NumParticipants: 4,
+    NumParticipants: 1,
   },
   {
     Key: '25',
