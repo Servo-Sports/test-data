@@ -10,8 +10,7 @@ import {
 } from './utils';
 const chance = new Chance();
 
-const schema =
-  'https://ijruschemas.z16.web.core.windows.net/v1.3.0/event.schema.json';
+const schema = 'https://schema.ijru.sport/v1.3.0/event.schema.json';
 
 const AgeGroups = [
   {
