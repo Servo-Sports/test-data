@@ -194,6 +194,8 @@ function createParticipant(
   const birthdate = firstBirthdate.plus({days: birthdateOffset});
   const age = -birthdate.diffNow('years').years;
   const IsJudge = age >= 16; // make anyone 16 or older eligible to judge
+  const Roles = ["competitor"]
+  if (IsJudge) Roles.push("judge")
   return {
     Key: ParticipantID.toString(),
     ParticipantID,
@@ -203,8 +205,7 @@ function createParticipant(
     LastName: chance.last(),
     GenderID: gender === 'female' ? 1 : 0,
     Comments: null,
-    IsCompetitor: true,
-    IsJudge,
+    Roles,
     PhotoBlobUri: null,
   };
 }
